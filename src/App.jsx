@@ -7,16 +7,26 @@ import './css/pagination.css';
 function App() {
   const [url, setUrl] = React.useState('');
   const [response, setResponse] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const responseFetch = await fetch(url);
       const data = await responseFetch.json();
       setResponse(data);
+      setLoading(false);
     };
 
-    fetchData();
+    if (url) {
+      fetchData();
+    }
   }, [url]);
+
+  const handleMenuClick = (category) => {
+    setResponse(null);
+    setUrl(`https://rickandmortyapi.com/api/${category}`);
+  };
 
   const handlePagination = (direction) => {
     if (response) {
@@ -30,21 +40,23 @@ function App() {
   return (
     <>
       <div className="menu">
-        <button onClick={() => setUrl('https://rickandmortyapi.com/api/character')}>Personnages</button>
-        <button onClick={() => setUrl('https://rickandmortyapi.com/api/location')}>Lieux</button>
-        <button onClick={() => setUrl('https://rickandmortyapi.com/api/episode')}>Épisodes</button>
+        <button onClick={() => handleMenuClick('character')}>Personnages</button>
+        <button onClick={() => handleMenuClick('location')}>Lieux</button>
+        <button onClick={() => handleMenuClick('episode')}>Épisodes</button>
       </div>
       
       <div className="cards">
-        {response && url.includes('character') && response.results.map((c) => (
+        {loading && <div className="loader">Chargement...</div>}
+        
+        {response && !loading && url.includes('character') && response.results.map((c) => (
           <CharacterCard key={c.id} character={c} />
         ))}
 
-        {response && url.includes('location') && response.results.map((p) => (
+        {response && !loading && url.includes('location') && response.results.map((p) => (
           <PlaceCard key={p.id} place={p} />
         ))}
 
-        {response && url.includes('episode') && response.results.map((e) => (
+        {response && !loading && url.includes('episode') && response.results.map((e) => (
           <EpisodeCard key={e.id} episode={e} />
         ))}
       </div>
