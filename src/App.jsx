@@ -5,7 +5,7 @@ import EpisodeCard from './components/EpisodeCard';
 import './css/pagination.css';
 
 function App() {
-  const [url, setUrl] = React.useState('https://rickandmortyapi.com/api/character?page=1');
+  const [url, setUrl] = React.useState('');
   const [response, setResponse] = React.useState(null);
 
   React.useEffect(() => {
@@ -30,9 +30,9 @@ function App() {
   return (
     <>
       <div className="menu">
-        <button onClick={() => setUrl('https://rickandmortyapi.com/api/character?page=1')}>Personnages</button>
-        <button onClick={() => setUrl('https://rickandmortyapi.com/api/location?page=1')}>Lieux</button>
-        <button onClick={() => setUrl('https://rickandmortyapi.com/api/episode?page=1')}>Épisodes</button>
+        <button onClick={() => setUrl('https://rickandmortyapi.com/api/character')}>Personnages</button>
+        <button onClick={() => setUrl('https://rickandmortyapi.com/api/location')}>Lieux</button>
+        <button onClick={() => setUrl('https://rickandmortyapi.com/api/episode')}>Épisodes</button>
       </div>
       
       <div className="cards">
